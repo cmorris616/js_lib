@@ -1,0 +1,42 @@
+<html>
+<head>
+	<title>Modal Dialog Test</title>
+	
+	<script type="text/javascript" src="modal_dialog.js"></script>
+	
+	<script>
+	var dialog;
+	
+	document.addEventListener('DOMContentLoaded', function() {
+		dialog = modalDialog({
+			"contentElement": document.getElementById('test_dialog'),
+			"buttons": [
+				{
+					"text": "Yes",
+					"default": true,
+					"cancel": false,
+					"click": function() {
+						alert("Yes clicked");
+					}
+				},
+				{
+					"text": "No",
+					"default": false,
+					"cancel": true,
+					"click": function() {
+						alert("No clicked");
+					}
+				}
+			]
+		});
+	});
+	</script>
+</head>
+<body>
+	<h1>Modal Dialog Test</h1>
+	<button onclick="dialog.open()">Show Dialog</button>
+	<div id="test_dialog" title="Test Dialog">
+		Here is the dialog
+	</div>
+</body>
+</html>

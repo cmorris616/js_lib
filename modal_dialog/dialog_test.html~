@@ -1,0 +1,12 @@
+<html>
+<body>
+	<div>
+		<div id="modal_dialog_title">Dialog Title</div>
+		<div id="modal_dialog_content">Insert contentElement</div>
+		<div id="modal_dialog_buttons">
+			<button>OK</button>
+			<button>Cancel</button>
+		</div>
+	</div>
+</body>
+</html>
