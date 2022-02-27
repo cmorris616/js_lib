@@ -11,6 +11,9 @@ TODO list:
  * buttons.  The title of the dialog is set to the 'title' attribute of the
  * provided content element.
  *
+ * There is a 'dialog' tag in HTML now, but there is insufficient support
+ * across the browsers at the time of this writing.
+ *
  * @param {Element} contentElement The element representing the content
  * of the dialog.
  *
@@ -21,7 +24,7 @@ TODO list:
  *
  * {
  *		"contentElement": {HTML element to be the content of the dialog},
- *    "buttons": [
+ *      "buttons": [
  *    	{
  *       	"text": "OK",
  *				"default": true,
@@ -51,15 +54,19 @@ var modalDialog = function(params) {
 	var BUTTON_DEFAULT_PROPERTY = "default";
 	var BUTTON_CANCEL_PROPERTY = "cancel";
 	
+	var focusTrap = null;
+	
 	if(!params.hasOwnProperty("buttons")) {
 		params["buttons"] = [];
+	}
+	
+	if(params.hasOwnProperty("focusTrap")) {
+		focusTrap = params["focusTrap"];
 	}
 	
 	var contentElement = params.contentElement;
 	var defaultButton;
 	var cancelButton;
-	
-	contentElement.style.display = "none";
 	
 	var blockerPane = document.createElement("div");
 	var dialogElement = document.createElement("div");
@@ -71,20 +78,10 @@ var modalDialog = function(params) {
 	
 	document.body.appendChild(blockerPane);
 	document.body.appendChild(dialogElement);
-	dialogElement.focus();
 	
 	if(defaultButton != null) {
 		defaultButton.focus();	
 	}
-	
-		dialogElement.addEventListener("keyup", function(event) {
-			if(event.keyCode == 13 && defaultButton != null) {
-				defaultButton.click();
-			}
-			else if(event.keyCode == 27 && cancelButton != null) {
-				cancelButton.click();
-			}
-		});
 	
 	/**
 	 * Closes this dialog.  The dialog is hidden, but not removed from the DOM.
@@ -103,6 +100,8 @@ var modalDialog = function(params) {
 		
 		dialogElement.style.left = (blockerPane.clientWidth / 2) - (dialogElement.clientWidth / 2);
 		dialogElement.style.top = (blockerPane.clientHeight / 2) - (dialogElement.clientHeight / 2);
+		
+		defaultButton.focus();
 	}
 	
 	/**
@@ -128,11 +127,11 @@ var modalDialog = function(params) {
 	 * Sets the styles for the button container in the dialog.
 	 */
 	function setButtonContainerStyles(buttonContainer) {
-		bcStyle = buttonContainer.style;
+		var bcStyle = buttonContainer.style;
 		
 		bcStyle.textAlign = "right";
 		bcStyle.padding = "7px";
-		bcStyle.position = "absolute";
+		bcStyle.position = "relative";
 		bcStyle.bottom = "0px";
 		bcStyle.left = "0px";
 		bcStyle.right = "0px";
@@ -147,7 +146,7 @@ var modalDialog = function(params) {
 	 * @param {Element} buttonElement The button element to be styled.
 	 */	
 	function setButtonStyles(buttonElement) {
-		btStyle = buttonElement.style;
+		var btStyle = buttonElement.style;
 		
 		btStyle.borderRadius = "6px";
 		btStyle.padding = "4px";
@@ -163,7 +162,7 @@ var modalDialog = function(params) {
 	 * content for this dialog.
 	 */
 	function setContentStyles(dialogContentElement) {
-		dcStyle = dialogContentElement.style;
+		var dcStyle = dialogContentElement.style;
 		
 		dcStyle.padding = "7px";
 	}
@@ -213,13 +212,15 @@ var modalDialog = function(params) {
 		dialogElement.appendChild(newDiv);
 		
 		newDiv = document.createElement("div");
-		newDiv.innerHTML = contentElement.innerHTML;
+		//newDiv.innerHTML = contentElement.innerHTML;
+		contentElement.parentElement.removeChild(contentElement);
+		newDiv.appendChild(contentElement);
 		setContentStyles(newDiv);
 		dialogElement.appendChild(newDiv);
 		
 		newDiv = document.createElement("div");
 		
-		buttons = params.buttons;
+		var buttons = params.buttons;
 		
 		if(buttons.length == 0) {
 			newButton = document.createElement("button");
@@ -229,6 +230,8 @@ var modalDialog = function(params) {
 			newDiv.appendChild(newButton);
 		}
 		else {
+			var buttonParam;
+			
 			for(var i = 0; i < buttons.length; i++) {
 				buttonParam = buttons[i];
 				newButton = document.createElement("button");
@@ -239,8 +242,8 @@ var modalDialog = function(params) {
 					newButton.addEventListener("click", buttonParam.click)
 				}
 				
-				if(buttonParam.hasOwnProperty(BUTTON_DEFAULT_PROPERTY) &&
-					buttonParam[BUTTON_DEFAULT_PROPERTY] == true) {
+				if((buttonParam.hasOwnProperty(BUTTON_DEFAULT_PROPERTY) &&
+					buttonParam[BUTTON_DEFAULT_PROPERTY] == true) || defaultButton == null) {
 						defaultButton = newButton;
 				}
 				
@@ -256,6 +259,17 @@ var modalDialog = function(params) {
 		
 		setButtonContainerStyles(newDiv);
 		dialogElement.appendChild(newDiv);
+	
+		dialogElement.addEventListener("keyup", function(event) {
+			if(event.code == "Enter" && defaultButton != null) {
+				defaultButton.click();
+				event.preventDefault();
+			}
+			else if(event.code == "Escape" && cancelButton != null) {
+				cancelButton.click();
+				event.preventDefault();
+			}
+		});
 	}
 		
 	return {

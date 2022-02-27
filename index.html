@@ -1,15 +1,20 @@
 <html>
 <head>
-	<title>Modal Dialog Test</title>
+	<title>JS Lib Test Page</title>
 	
-	<script type="text/javascript" src="modal_dialog.js"></script>
+	<script type="text/javascript" src="focus_trap/focus_trap.js"></script>
+	<script type="text/javascript" src="modal_dialog/modal_dialog.js"></script>
 	
 	<script>
+	
 	var dialog;
 	
 	document.addEventListener('DOMContentLoaded', function() {
+		var dialogElement = document.getElementById("test_dialog");
+		var focus_trap = focusTrap(dialogElement);
 		dialog = modalDialog({
-			"contentElement": document.getElementById('test_dialog'),
+			"contentElement": dialogElement,
+			"focusTrap": focus_trap,
 			"buttons": [
 				{
 					"text": "Yes",
@@ -36,9 +41,15 @@
 </head>
 <body>
 	<h1>Modal Dialog Test</h1>
-	<button onclick="dialog.open()">Show Dialog</button>
+	<button onclick="dialog.open()">Show Dialog</button><br />
 	<div id="test_dialog" title="Test Dialog">
 		Here is the dialog
+		<div>
+			<input type="text" id="text1" /><br />
+			<input type="text" id="text2" /><br />
+			<input type="text" id="text3" /><br />
+			<input type="text" id="text4" /><br />
+		</div>
 	</div>
 </body>
 </html>
