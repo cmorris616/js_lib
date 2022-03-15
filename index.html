@@ -11,10 +11,9 @@
 	
 	document.addEventListener('DOMContentLoaded', function() {
 		var dialogElement = document.getElementById("test_dialog");
-		var focus_trap = focusTrap(dialogElement);
 		dialog = modalDialog({
 			"contentElement": dialogElement,
-			"focusTrap": focus_trap,
+			"trapFocus": true,
 			"buttons": [
 				{
 					"text": "Yes",

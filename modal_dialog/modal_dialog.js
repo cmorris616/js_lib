@@ -54,15 +54,11 @@ var modalDialog = function(params) {
 	var BUTTON_DEFAULT_PROPERTY = "default";
 	var BUTTON_CANCEL_PROPERTY = "cancel";
 	
-	var focusTrap = null;
-	
 	if(!params.hasOwnProperty("buttons")) {
 		params["buttons"] = [];
 	}
 	
-	if(params.hasOwnProperty("focusTrap")) {
-		focusTrap = params["focusTrap"];
-	}
+	var trapFocus = params.trapFocus == true
 	
 	var contentElement = params.contentElement;
 	var defaultButton;
@@ -72,6 +68,10 @@ var modalDialog = function(params) {
 	var dialogElement = document.createElement("div");
 	
 	setupDialogElement();
+
+	if(trapFocus) {
+		focusTrap(dialogElement);
+	}
 	
 	setBlockerPaneStyles();
 	setDialogElementStyles();
@@ -100,8 +100,31 @@ var modalDialog = function(params) {
 		
 		dialogElement.style.left = (blockerPane.clientWidth / 2) - (dialogElement.clientWidth / 2);
 		dialogElement.style.top = (blockerPane.clientHeight / 2) - (dialogElement.clientHeight / 2);
-		
-		defaultButton.focus();
+
+		focusFirstElement(contentElement);
+	}
+
+	/**
+	 * Sets focus on the first focusable element that is a child of the specified parent element. 
+	 * @param {*} parentElement the element containing potentially focusable elements
+	 */
+	function focusFirstElement(parentElement) {
+
+		for(var i = 0; i < parentElement.children.length; i++) {
+			var elem = parentElement.children[i];
+
+			if(elem.tabIndex >= 0) {
+				elem.focus();
+				return true;
+			}
+			else {
+				if(elem.childElementCount > 0) {
+					return focusFirstElement(elem);
+				}
+			}
+		}
+
+		return false;
 	}
 	
 	/**
@@ -212,7 +235,6 @@ var modalDialog = function(params) {
 		dialogElement.appendChild(newDiv);
 		
 		newDiv = document.createElement("div");
-		//newDiv.innerHTML = contentElement.innerHTML;
 		contentElement.parentElement.removeChild(contentElement);
 		newDiv.appendChild(contentElement);
 		setContentStyles(newDiv);

@@ -14,43 +14,78 @@
  	var isEnabled = true;
 	var eligibleElements = []
 	
-	focusElement.addEventListener("blur", blurEvent);
-	eligibleElements.push(focusElement);
+	if(focusElement.tabIndex >= 0) {
+		focusElement.addEventListener("keydown", keyDownEvent);
+		eligibleElements.push(focusElement);
+	}
 
 	addEventsToChildren(focusElement);
 
+	/**
+	 * Adds the necessary events to the children of the specified parent
+	 * element to ensure that focus stays within the appropriate element.
+	 * @param {*} parentElement the element containing the children that
+	 * are allowed to receive focus.
+	 */
 	function addEventsToChildren(parentElement) {
 
 		for(var i = 0; i < parentElement.children.length; i++) {
 			var childElement = parentElement.children[i];
 
-			childElement.addEventListener("blur", blurEvent);
-			eligibleElements.push(childElement);
+			if(childElement.tabIndex >= 0) {
+				childElement.addEventListener("keydown", keyDownEvent);
+				eligibleElements.push(childElement);
+			}
 
 			if(childElement.childElementCount > 0) {
 				addEventsToChildren(childElement);
 			}
 		}
 	}
+
+	/**
+	 * Handles the keydown event for the elements of the parent element
+	 * in which focus should stay.
+	 * 
+	 * @param {A} event the event object for the event
+	 * @returns true if focus is established, false otherwise
+	 */
+	function keyDownEvent(event) {
+		if(isEnabled == false || event.key != "Tab") {
+			return;
+		}
+
+		var nextIndex;
+		
+		if(event.shiftKey) {
+			nextIndex = eligibleElements.indexOf(event.currentTarget) - 1;
+		}
+		else {
+			nextIndex = eligibleElements.indexOf(event.currentTarget) + 1;
+		}
+
+		if(nextIndex >= eligibleElements.length) {
+			nextIndex = 0;
+		} else if(nextIndex < 0) {
+			nextIndex = eligibleElements.length - 1;
+		}
+
+		eligibleElements[nextIndex].focus();
+		event.stopPropagation();
+		event.cancelBubble = true;
+		event.preventDefault();
+	}
  	
- 	function blurEvent(event) {
- 		console.info('Going from ' + event.currentTarget.id + ' to ' + event.relatedTarget.id);
-		 curIndex = eligibleElements.indexOf(event.currentTarget) + 1;
-
-		 if(curIndex >= eligibleElements.length) {
-			 curIndex = 0;
-		 }
-
-		 eligibleElements[curIndex].focus();
-		 event.stopPropagation();
-
- 		console.info('Updated - Going from ' + event.currentTarget.id + ' to ' + eligibleElements[curIndex].id);
- 	}
- 	
+	/**
+	 * Disables the focus trap
+	 */
  	function disable() {
  		isEnabled = false;
  	}
  	
+	 /**
+	  * Enables the focus trap
+	  */
  	function enable() {
  		isEnabled = true;
  	}
