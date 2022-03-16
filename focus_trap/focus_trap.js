@@ -24,7 +24,7 @@
 	/**
 	 * Adds the necessary events to the children of the specified parent
 	 * element to ensure that focus stays within the appropriate element.
-	 * @param {*} parentElement the element containing the children that
+	 * @param {Element} parentElement the element containing the children that
 	 * are allowed to receive focus.
 	 */
 	function addEventsToChildren(parentElement) {
@@ -47,7 +47,7 @@
 	 * Handles the keydown event for the elements of the parent element
 	 * in which focus should stay.
 	 * 
-	 * @param {A} event the event object for the event
+	 * @param {KeyboardEvent} event the event object for the event
 	 * @returns true if focus is established, false otherwise
 	 */
 	function keyDownEvent(event) {

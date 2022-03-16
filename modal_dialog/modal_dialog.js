@@ -106,7 +106,7 @@ var modalDialog = function(params) {
 
 	/**
 	 * Sets focus on the first focusable element that is a child of the specified parent element. 
-	 * @param {*} parentElement the element containing potentially focusable elements
+	 * @param {Element} parentElement the element containing potentially focusable elements
 	 */
 	function focusFirstElement(parentElement) {
 
