@@ -14,9 +14,6 @@ TODO list:
  * There is a 'dialog' tag in HTML now, but there is insufficient support
  * across the browsers at the time of this writing.
  *
- * @param {Element} contentElement The element representing the content
- * of the dialog.
- *
  * @param {Object} params An object containing the parameters for the dialog.
  *
  * The params object can take the below form (The content element is the

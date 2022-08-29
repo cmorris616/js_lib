@@ -1,0 +1,23 @@
+.menu {
+    background-color: buttonface;
+    border-style: outset;
+    display: none;
+    font-size: 25px;
+    list-style-type: none;
+    padding: 2px 0px 2px 0px;
+    position: absolute;
+    width: 200px;
+}
+
+.menu li {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding-left: 8px;
+    padding-right: 5px;
+}
+
+.menu li:hover {
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}

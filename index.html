@@ -1,45 +1,115 @@
 <html>
+
 <head>
 	<title>JS Lib Test Page</title>
-	
+
+	<style>
+		.page_header {
+			color: white;
+			background-color: black;
+			margin-bottom: 20px;
+		}
+
+		.navbar {
+			width: 20px;
+			height: 20px;
+			display: inline-block;
+			margin: 10px;
+			border: 1px solid #00bfb6;
+			padding: 8px 10px;
+			transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			vertical-align: middle;
+			float: right;
+		}
+
+		.navbar div {
+			height: 2px;
+			background: #fff;
+			margin: 2px 0px 6px 0px;
+			border-radius: 25px;
+			transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+		}
+
+		.navbar div:nth-child(2) {
+			width: 10px;
+		}
+
+		.navbar div:nth-child(3) {
+			width: 5px;
+		}
+
+		.navbar:hover {
+			border-style: outset;
+		}
+
+		.navbar:hover div {
+			width: 20px;
+		}
+	</style>
+
+	<link rel="stylesheet" href="menu/menu.css" type="text/css"/>
+
 	<script type="text/javascript" src="focus_trap/focus_trap.js"></script>
 	<script type="text/javascript" src="modal_dialog/modal_dialog.js"></script>
-	
+	<script type="text/javascript" src="menu/menu.js"></script>
+
 	<script>
-	
-	var dialog;
-	
-	document.addEventListener('DOMContentLoaded', function() {
-		var dialogElement = document.getElementById("test_dialog");
-		dialog = modalDialog({
-			"contentElement": dialogElement,
-			"trapFocus": true,
-			"buttons": [
-				{
-					"text": "Yes",
-					"default": true,
-					"cancel": false,
-					"click": function() {
-						alert("Yes clicked");
-						dialog.close();
+
+		var dialog;
+		var menu;
+
+		document.addEventListener('DOMContentLoaded', function () {
+			var dialogElement = document.getElementById("test_dialog");
+			var menuList = document.getElementById('menu_list');
+			var menu_button = document.getElementById("menu_button");
+
+			menu = menu({
+				"item_list": menuList,
+				"trigger_element": menu_button,
+				"relative_location": "bottomright"
+			});
+
+			dialog = modalDialog({
+				"contentElement": dialogElement,
+				"trapFocus": true,
+				"buttons": [
+					{
+						"text": "Yes",
+						"default": true,
+						"cancel": false,
+						"click": function () {
+							alert("Yes clicked");
+							dialog.close();
+						}
+					},
+					{
+						"text": "No",
+						"default": false,
+						"cancel": true,
+						"click": function () {
+							alert("No clicked");
+							dialog.close();
+						}
 					}
-				},
-				{
-					"text": "No",
-					"default": false,
-					"cancel": true,
-					"click": function() {
-						alert("No clicked");
-						dialog.close();
-					}
-				}
-			]
+				]
+			});
 		});
-	});
 	</script>
 </head>
+
 <body>
-	<h1>Modal Dialog Test</h1>
+	<div id="page_header" class="page_header">
+		<div style="display:inline-block; vertical-align: middle;">
+			<h1>Modal Dialog Test</h1>
+		</div>
+		<div id="menu_button" class="navbar">
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
 	<button onclick="dialog.open()">Show Dialog</button><br />
 	<div id="test_dialog" title="Test Dialog">
 		Here is the dialog
@@ -50,5 +120,12 @@
 			<input type="text" id="text4" /><br />
 		</div>
 	</div>
+	<ul id="menu_list">
+		<li><a href="/nopage.html"><div>Home</div></a></li>
+		<li><a href="/nopage.html"><div>Page 1</div></a></li>
+		<li>-</li>
+		<li><a href="/nopage.html"><div>Logout</div></a></li>
+	</ul>
 </body>
+
 </html>
