@@ -1,0 +1,51 @@
+.date_picker {
+    border: solid black 1px;
+    border-collapse: collapse;
+}
+
+.date_picker tr {
+    border: solid black 1px;
+}
+
+.date_picker tr td {
+    border: solid black 1px;
+    padding: 5px;
+    text-align: center;
+}
+
+.date_picker_header {
+    background-color: aliceblue;
+    font-weight: bold;
+}
+
+.date_picker_nav_buttons {
+    background-color: aqua;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.date_picker_nav_buttons:hover {
+    background-color: black;
+    color: white;
+}
+
+.date_picker_day_header {
+    background-color: honeydew;
+}
+
+.date_picker_day_cell {
+    cursor: pointer;
+}
+
+.date_picker_day_cell_selected {
+    background-color: black;
+    color: white;
+    cursor: default;
+    font-weight: bold;
+}
+
+.date_picker_day_cell_inactive {
+    background-color: lightgray;
+    cursor: default;
+}

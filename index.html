@@ -50,21 +50,26 @@
 	</style>
 
 	<link rel="stylesheet" href="menu/menu.css" type="text/css"/>
+	<link rel="stylesheet" href="date_picker/date_picker.css" type="text/css"/>
 
 	<script type="text/javascript" src="focus_trap/focus_trap.js"></script>
 	<script type="text/javascript" src="modal_dialog/modal_dialog.js"></script>
 	<script type="text/javascript" src="menu/menu.js"></script>
+	<script type="text/javascript" src="date_picker/date_picker.js"></script>
 
 	<script>
 
 		var dialog;
 		var menu;
-
+		var date_picker;
+		
 		document.addEventListener('DOMContentLoaded', function () {
 			var dialogElement = document.getElementById("test_dialog");
 			var menuList = document.getElementById('menu_list');
 			var menu_button = document.getElementById("menu_button");
 
+			date_picker = date_picker({});
+			
 			menu = menu({
 				"item_list": menuList,
 				"trigger_element": menu_button,
@@ -111,6 +116,8 @@
 		</div>
 	</div>
 	<button onclick="dialog.open()">Show Dialog</button><br />
+	<br />
+	<br />
 	<div id="test_dialog" title="Test Dialog">
 		Here is the dialog
 		<div>
